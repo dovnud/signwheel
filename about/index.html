@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How We Calculate | SignWheel</title>
+<meta name="description" content="How SignWheel works out a chart: the data, the method, the edge cases we flag instead of hiding, our measured accuracy against NASA JPL values, and how to check our numbers yourself.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="starfield" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="/">Sign<span class="wheel-o">Wheel</span><small>Your chart, in plain words</small></a>
+    <nav class="main">
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/" aria-current="page">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap narrow">
+    <p class="label" style="margin-top:34px">How we calculate</p>
+    <h1>Calculated, not typed in. Checked, not promised.</h1>
+    <p class="lede">This page is the whole method, in the open. If a line of it ever stops being true of the site, the words change before the site does.</p>
+
+    <h2>The short version</h2>
+    <p>Planetary positions on SignWheel are calculated in your own browser, from the VSOP87 planetary data published by the Bureau des Longitudes in Paris, the same family of tables most professional astrology software is built on. The Moon uses a compact published algorithm with its main wobbles (perturbations) included. Houses, the rising sign and the Midheaven are worked out from the time and place by formulas we wrote and tested ourselves. The zodiac is tropical, the one used by nearly all Western astrology sites.</p>
+    <p>Before this page was written, we tested the calculator against reference values derived from NASA's Jet Propulsion Laboratory ephemeris (DE440), the data the space agencies navigate by. That reference was itself checked against the Swiss Ephemeris, the paid standard the big astrology sites use, on 100 charts: the two agreed to within about a fiftieth of one arc-minute on every planet. Then we measured our own browser calculator against the same reference. The results are below, exactly as measured.</p>
+
+    <h2>Our measured accuracy</h2>
+    <p>Worst difference found, across the standard test charts (normal births, southern hemisphere, far north, clock-change traps, a birth minutes before a sign change), between this calculator and the NASA JPL reference:</p>
+    <table class="placements">
+      <tr><th>Body</th><th>Worst difference</th></tr>
+      <tr><td>Sun</td><td class="pos">0.13 arc-minutes</td></tr>
+      <tr><td>Mercury, Venus, Mars</td><td class="pos">under 0.41 arc-minutes</td></tr>
+      <tr><td>Jupiter, Saturn, Uranus, Neptune</td><td class="pos">under 0.39 arc-minutes</td></tr>
+      <tr><td>Pluto</td><td class="pos">1.57 arc-minutes</td></tr>
+      <tr><td>Moon</td><td class="pos">3.12 arc-minutes</td></tr>
+      <tr><td>Rising sign and Midheaven</td><td class="pos">under 0.45 arc-minutes</td></tr>
+    </table>
+    <p class="small">One arc-minute is a sixtieth of a degree. For scale: a chart printed by a major site that differs from these values by more than about 2 arc-minutes on a planet is working from different settings or a lower-grade table, and any difference in the sign is a plain error. The Moon is our least precise line because it moves fast and wobbles most; 3 arc-minutes is a few minutes of clock time in Moon terms, and we would rather publish the number than round it away.</p>
+
+    <h2>Check us yourself, in two minutes</h2>
+    <p>Draw any chart here, then draw the same birth on astro.com (Astrodienst, the Swiss Ephemeris people) and compare the placement table line by line. The signs should match everywhere, and the degrees should match within the differences above. Where a site will not show you degrees, a house system, or the time offset it used, you cannot check it. We print all three on every chart.</p>
+
+    <h2>The honest edges</h2>
+    <p><strong>The offset is printed.</strong> Every chart states the time zone and the exact offset used, because most wrong charts are wrong there, not in the planets.</p>
+    <p><strong>Clock-change births are flagged.</strong> A birth time in the spring-forward gap never existed as a local time, and a time in the fall-back hour happened twice. If yours is one of those, the chart tells you which reading we used and why, instead of hiding the choice.</p>
+    <p><strong>Far north and far south.</strong> The usual house system, Placidus, mathematically cannot be drawn for some charts at high latitudes. Some sites switch systems silently or keep the Placidus label on a chart that is not Placidus. We print a warning on the chart and label the fallback (Equal houses) as what it is.</p>
+    <p><strong>No birth time, no guessing.</strong> Without a birth time there is no rising sign and no houses, so we show none. The Moon can even change sign during a single day; when it does, the chart shows the day's range and names both possible signs.</p>
+    <p><strong>No rounding across a sign.</strong> A Sun at 29 degrees 59 minutes of Pisces is printed as Pisces 29°59′. It is never rounded up into the next sign, a mistake we have caught a major site making.</p>
+
+    <h2>What accuracy does not mean</h2>
+    <p>All of the above is about arithmetic: whether the planets are put in the right places. It says nothing about what a placement means. The readings are traditional interpretations, written by us in plain words, offered for entertainment and reflection. No calculation, however exact, turns an interpretation into a fact about your future, and we do not claim otherwise anywhere on this site. See the <a href="/disclaimer/">Disclaimer</a>.</p>
+
+    <h2>Your inputs decide the result</h2>
+    <p>A chart is only as accurate as the birth date, time and place used to make it. A birth time out by a few minutes can move the rising sign, especially near a sign boundary or at high latitudes. If a chart looks wrong, check the place and the offset printed on it first, and try the nearest larger town if a small birthplace is missing from the list.</p>
+    <p class="small">Found a mistake? If a position on your chart disagrees with the inputs shown on it, we would rather fix a calculation fault than leave it. That is a promise we can keep precisely because the working is shown.</p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p class="promise">Your birth details are calculated and saved on your own device; we never ask for an account or an email, and we hold no copy.</p>
+    <nav>
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+      <a href="/credits/">Credits</a>
+    </nav>
+    <p class="fineprint">For entertainment and reflection only. SignWheel does not give medical, mental health, legal, financial, or other professional advice, and a chart is not a prediction of what will happen.</p>
+    <p class="fineprint">Planetary data: VSOP87, Bureau des Longitudes, via the astronomia package (MIT). Accuracy checked against NASA JPL DE440 values. Place data: GeoNames (www.geonames.org), Creative Commons Attribution 4.0; see Credits.</p>
+  </div>
+</footer>
+
+<script src="/js/stars.js"></script>
+</body>
+</html>

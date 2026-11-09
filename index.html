@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SignWheel: Your birth chart, in plain words</title>
+<meta name="description" content="A free birth chart worked out in your browser. No account, no email, nothing uploaded. Your chart, read in plain words, with its working shown.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="starfield" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="/">Sign<span class="wheel-o">Wheel</span><small>Your chart, in plain words</small></a>
+    <nav class="main">
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="hero">
+      <p class="label">A free birth chart, with nothing to sign up for</p>
+      <h1>The map of the sky<br>at the moment you were born.</h1>
+      <p class="lede">SignWheel works out your birth chart right here in your browser and reads it back in plain words. No account. No email. Nothing leaves your device.</p>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn" href="/birth-chart/">Draw my chart</a>
+        <a class="btn ghost" href="/moon-phase/">Tonight's moon</a>
+      </div>
+      <div class="hero-wheel" id="hero-wheel"></div>
+      <p class="caption">The sky right now, drawn by the same engine that draws your chart</p>
+      <p class="small" id="hero-moon"></p>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="label">How it works</p>
+      <div class="grid3">
+        <div class="step"><div class="num">1</div><h3>Three facts</h3><p>Your birth date, your birth time if you know it, and the town you were born in. That is all a chart is made from, and it is all we ask for.</p></div>
+        <div class="step"><div class="num">2</div><h3>Worked out on the spot</h3><p>The positions are calculated in your browser from published planetary data, the same kind of tables the big astrology sites use. We show the settings and the time offset used, so you can check any line of it.</p></div>
+        <div class="step"><div class="num">3</div><h3>Read in plain words</h3><p>Your Sun, Moon and rising sign, explained the way you would explain them to a friend. Save the chart in your browser, or share it with a link. Still no account.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap grid2">
+      <div>
+        <p class="label">Why you can check us</p>
+        <h2>We show our working.</h2>
+        <p>Every chart prints the time zone offset it used. If your birth time fell in the hour the clocks jumped, the chart says so. If you were born so far north that the usual house system cannot be drawn, the chart says that too, and shows the fallback it used instead of quietly relabelling it.</p>
+        <p>Our numbers are tested against NASA JPL reference values, and the test results are published, not promised. <a href="/about/">Read how we calculate</a>.</p>
+      </div>
+      <div>
+        <p class="label">The tools</p>
+        <h2>Start with the chart.</h2>
+        <p><a href="/birth-chart/">Birth chart</a>: the full wheel, placements to the arc-minute, and your big three in plain words.</p>
+        <p><a href="/compatibility/">Compatibility</a>: two charts read against each other, with a verdict in words and a card you can share.</p>
+        <p><a href="/moon-phase/">Moon phase today</a>: tonight's moon, how much of it is lit, and the sign it is travelling through.</p>
+        <p><a href="/ephemeris/">Ephemeris</a>: where every planet stands on any date, worked out live so you can check us.</p>
+        <p class="small">On the drawing board next: your daily sky, the day's planets read against your own chart.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p class="promise">Your birth details are calculated and saved on your own device; we never ask for an account or an email, and we hold no copy.</p>
+    <nav>
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+      <a href="/credits/">Credits</a>
+    </nav>
+    <p class="fineprint">For entertainment and reflection only. SignWheel does not give medical, mental health, legal, financial, or other professional advice, and a chart is not a prediction of what will happen.</p>
+    <p class="fineprint">Planetary data: VSOP87, Bureau des Longitudes, via the astronomia package (MIT). Accuracy checked against NASA JPL DE440 values. Place data: GeoNames (www.geonames.org), Creative Commons Attribution 4.0; see Credits.</p>
+  </div>
+</footer>
+
+<script src="/js/vsop87.js"></script>
+<script src="/js/engine.js"></script>
+<script src="/js/wheel.js"></script>
+<script src="/js/stars.js"></script>
+<script>
+  (function () {
+    var now = Date.now();
+    var planets = Engine.planetLongitudes(now);
+    document.getElementById("hero-wheel").innerHTML =
+      drawWheelSVG({ planets: planets, cusps: null, asc: null, mc: null, size: 520 });
+    var ph = Engine.moonPhase(now);
+    document.getElementById("hero-moon").textContent =
+      "Tonight: " + Engine.phaseName(ph.elongation) + ", " + Math.round(ph.illum * 100) +
+      "% lit, Moon in " + Engine.signOf(ph.moonLon) + ".";
+  })();
+</script>
+</body>
+</html>

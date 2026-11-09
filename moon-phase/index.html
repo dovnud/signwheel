@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moon Phase Today | SignWheel</title>
+<meta name="description" content="Tonight's moon phase, how much of the moon is lit, and the sign the moon is in, calculated live from the same engine that draws SignWheel charts.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="starfield" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="/">Sign<span class="wheel-o">Wheel</span><small>Your chart, in plain words</small></a>
+    <nav class="main">
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/" aria-current="page">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap narrow">
+    <p class="label" style="margin-top:34px">The moon today</p>
+    <h1>Tonight's moon.</h1>
+    <p class="lede">Worked out for this moment, from the same planetary engine that draws our charts. No tables copied from anywhere: it is calculated when you open the page.</p>
+
+    <div id="moon-now" class="plate moon-facts"></div>
+
+    <h2>The week ahead</h2>
+    <p class="small">Each row is that day at midday, Universal Time. The moon changes sign about every two and a half days, so the sign shown is where it spends the middle of the day.</p>
+    <table class="week" id="moon-week"></table>
+
+    <div class="plate">
+      <h3>The moon in your own chart</h3>
+      <p>Your birth chart fixes the moon where it stood the moment you were born. That placement is the second of your big three, and it is about feelings: what settles you, and what you reach for when you are tired or glad.</p>
+      <p><a class="btn ghost" href="/birth-chart/">Find your Moon sign</a></p>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p class="promise">Your birth details are calculated and saved on your own device; we never ask for an account or an email, and we hold no copy.</p>
+    <nav>
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+      <a href="/credits/">Credits</a>
+    </nav>
+    <p class="fineprint">For entertainment and reflection only. SignWheel does not give medical, mental health, legal, financial, or other professional advice, and a chart is not a prediction of what will happen.</p>
+    <p class="fineprint">Planetary data: VSOP87, Bureau des Longitudes, via the astronomia package (MIT). Accuracy checked against NASA JPL DE440 values. Place data: GeoNames (www.geonames.org), Creative Commons Attribution 4.0; see Credits.</p>
+  </div>
+</footer>
+
+<script src="/js/vsop87.js"></script>
+<script src="/js/engine.js"></script>
+<script src="/js/stars.js"></script>
+<script>
+  (function () {
+    function moonDisc(elongDeg, illum) {
+      var R = 92, cx = 110, cy = 110;
+      var c = Math.cos(elongDeg * Math.PI / 180);
+      var rx = Math.max(0.01, Math.abs(c) * R);
+      var waxing = elongDeg <= 180;
+      // The lit part: an outer semicircle on the lit side, closed by the
+      // terminator ellipse. Sweep flags flip at the quarter phases.
+      var sweepOuter, sweepTerm;
+      var litPath;
+      if (waxing) {
+        sweepOuter = 1; // right hand semicircle, top to bottom
+        sweepTerm = illum < 0.5 ? 0 : 1;
+        litPath = "M " + cx + " " + (cy - R) +
+          " A " + R + " " + R + " 0 0 " + sweepOuter + " " + cx + " " + (cy + R) +
+          " A " + rx + " " + R + " 0 0 " + sweepTerm + " " + cx + " " + (cy - R) + " Z";
+      } else {
+        sweepOuter = 0; // left hand semicircle, bottom to top
+        sweepTerm = illum < 0.5 ? 1 : 0;
+        litPath = "M " + cx + " " + (cy + R) +
+          " A " + R + " " + R + " 0 0 " + sweepOuter + " " + cx + " " + (cy - R) +
+          " A " + rx + " " + R + " 0 0 " + sweepTerm + " " + cx + " " + (cy + R) + " Z";
+      }
+      return '<svg class="moon-disc" width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="Moon phase drawing">' +
+        '<circle cx="110" cy="110" r="92" fill="#131c33" stroke="rgba(217,164,65,0.4)"/>' +
+        '<path d="' + litPath + '" fill="#e9dfc4"/>' +
+        '<circle cx="110" cy="110" r="92" fill="none" stroke="rgba(217,164,65,0.55)"/>' +
+        "</svg>";
+    }
+    var now = Date.now();
+    var ph = Engine.moonPhase(now);
+    var pos = Engine.planetLongitudes(now);
+    var dateStr = new Date(now).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    document.getElementById("moon-now").innerHTML =
+      moonDisc(ph.elongation, ph.illum) +
+      '<p class="big">' + Engine.phaseName(ph.elongation) + "</p>" +
+      "<p>" + Math.round(ph.illum * 100) + "% of the moon's face is lit, and the moon is travelling through " +
+      Engine.signOf(pos.Moon) + " (Moon at " + Engine.formatPosition(pos.Moon) + ").</p>" +
+      '<p class="small">' + dateStr + ". The sun is in " + Engine.signOf(pos.Sun) + ".</p>";
+
+    var rows = "<tr><th>Day</th><th>Phase</th><th>Lit</th><th>Moon in</th></tr>";
+    for (var i = 0; i < 7; i++) {
+      var t = new Date(now + i * 86400000);
+      var noon = Date.UTC(t.getUTCFullYear(), t.getUTCMonth(), t.getUTCDate(), 12);
+      var p2 = Engine.moonPhase(noon);
+      var label = t.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      rows += "<tr><td>" + label + "</td><td>" + Engine.phaseName(p2.elongation) + "</td><td>" +
+        Math.round(p2.illum * 100) + "%</td><td>" + Engine.signOf(p2.moonLon) + "</td></tr>";
+    }
+    document.getElementById("moon-week").innerHTML = rows;
+  })();
+</script>
+</body>
+</html>

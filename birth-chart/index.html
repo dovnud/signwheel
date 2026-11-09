@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Birth Chart | SignWheel</title>
+<meta name="description" content="Draw your birth chart free, in your browser. No account and no email. Wheel, placements to the arc-minute, and a plain-words reading of every placement in your chart.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="starfield" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="/">Sign<span class="wheel-o">Wheel</span><small>Your chart, in plain words</small></a>
+    <nav class="main">
+      <a href="/birth-chart/" aria-current="page">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap narrow">
+    <p class="label" style="margin-top:34px">The birth chart</p>
+    <h1>Your chart, drawn honestly.</h1>
+    <p class="lede">Three facts make a chart: the day you were born, the time if you know it, and the town. Everything else is arithmetic, and we show the arithmetic.</p>
+
+    <div class="plate">
+      <h2>Your birth details stay on your device</h2>
+      <p class="small">We do not ask for an account, a password, or an email address. Your chart is worked out in this browser, and your birth details are not saved on our servers. If you save a chart, it is saved in this browser, on this device, and you can delete it whenever you like. The full detail is in our <a href="/privacy/">Privacy Policy</a>.</p>
+
+      <form class="chart-form" id="chart-form" novalidate>
+        <div class="form-row">
+          <div>
+            <label for="birth-date">Birth date</label>
+            <input type="date" id="birth-date" required>
+          </div>
+          <div>
+            <label for="birth-time">Birth time</label>
+            <input type="time" id="birth-time">
+          </div>
+        </div>
+        <label class="checkline"><input type="checkbox" id="time-unknown"> I don't know my birth time <span class="small">(you still get a chart; the rising sign and houses need the time)</span></label>
+        <label for="birth-place">Birth place</label>
+        <div class="typeahead">
+          <input type="text" id="birth-place" placeholder="Start typing a town or city" autocomplete="off">
+          <ul id="place-list" style="display:none"></ul>
+        </div>
+        <p class="place-confirm" id="place-confirm"></p>
+        <div class="cta-row">
+          <button type="submit">Draw my chart</button>
+        </div>
+        <p class="fineprint">Calculated without an account. Your birth details are not saved on our servers. For entertainment and reflection only; a chart is not a prediction of what will happen.</p>
+        <p class="fineprint">Place data: <a href="https://www.geonames.org/">GeoNames</a>, used under the <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> licence. About 172,000 towns and cities are in the list.</p>
+      </form>
+    </div>
+
+    <div id="result" style="display:none"></div>
+
+    <div id="saved-wrap" style="display:none">
+      <h2>Charts saved on this device</h2>
+      <p class="small">Saved here means in this browser, on this device only. We hold no copy, and the charts do not follow you to another device. If you use a shared computer, delete them before you leave.</p>
+      <ul class="saved-list" id="saved-list"></ul>
+      <p id="delete-all-wrap" style="display:none"><button type="button" class="link-btn" id="delete-all-saved">Delete all my saved charts from this device</button></p>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p class="promise">Your birth details are calculated and saved on your own device; we never ask for an account or an email, and we hold no copy.</p>
+    <nav>
+      <a href="/birth-chart/">Birth Chart</a>
+      <a href="/compatibility/">Compatibility</a>
+      <a href="/moon-phase/">Moon Phase</a>
+      <a href="/ephemeris/">Ephemeris</a>
+      <a href="/library/">Library</a>
+      <a href="/about/">How We Calculate</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/disclaimer/">Disclaimer</a>
+      <a href="/credits/">Credits</a>
+    </nav>
+    <p class="fineprint">For entertainment and reflection only. SignWheel does not give medical, mental health, legal, financial, or other professional advice, and a chart is not a prediction of what will happen.</p>
+    <p class="fineprint">Planetary data: VSOP87, Bureau des Longitudes, via the astronomia package (MIT). Accuracy checked against NASA JPL DE440 values. Place data: GeoNames (www.geonames.org), Creative Commons Attribution 4.0; see Credits.</p>
+  </div>
+</footer>
+
+<script src="/js/vsop87.js"></script>
+<script src="/js/engine.js"></script>
+<script src="/js/wheel.js"></script>
+<script src="/js/cities.js"></script>
+<script src="/js/places-data.js"></script>
+<script src="/js/places.js"></script>
+<script src="/js/place-picker.js"></script>
+<script src="/js/texts-starter.js"></script>
+<script src="/js/texts-wave1.js"></script>
+<script src="/js/chart-ui.js"></script>
+<script src="/js/stars.js"></script>
+</body>
+</html>
