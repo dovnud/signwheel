@@ -106,7 +106,7 @@
       " (" + Math.abs(item.city.lat).toFixed(2) + "°, " + Math.abs(item.city.lon).toFixed(2) + "°). Time zone " + item.city.tz +
       ", offset used " + chart.resolved.offsetLabel + ". Zodiac: tropical. Houses: " + (chart.houseSystem || "none (no birth time)") + ".";
     let html = "";
-    html += '<div class="wheel-box">' + drawWheelSVG({ planets: chart.planets, cusps: chart.cusps, asc: chart.asc, mc: chart.mc, size: 520 }) + "</div>";
+    html += '<div class="wheel-box">' + drawWheelSVG({ planets: chart.planets, cusps: chart.cusps, asc: chart.asc, mc: chart.mc, size: 520, etch: "SW \u00B7 CAST " + item.date + " \u00B7 " + String(item.city.name).toUpperCase() + " \u00B7 " + (chart.houseSystem ? chart.houseSystem.toUpperCase().replace(" (FALLBACK)", "") : "NO BIRTH TIME") }) + "</div>";
     html += '<p class="settings-line">' + settings + "</p>";
     if (chart.notes.length) {
       html += '<div class="note-box"><span class="hand">worth knowing</span>' +
@@ -211,6 +211,7 @@
     html += '<p class="fineprint">Positions calculated in your browser from VSOP87 planetary data (checked against NASA JPL values; ' +
       'see <a href="/about/">How we calculate</a>). A wrong birth time or time zone is the most common cause of a wrong rising sign.</p>';
     resultEl.innerHTML = html;
+    if (window.WheelFX) WheelFX.play(resultEl);
     resultEl.style.display = "block";
 
     $("save-btn").addEventListener("click", () => {

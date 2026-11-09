@@ -94,7 +94,7 @@
     html += '<div class="wheels-pair">';
     for (const [item, chart, nm] of [[itemA, chartA, nameA], [itemB, chartB, nameB]]) {
       html += '<div><div class="wheel-box">' +
-        drawWheelSVG({ planets: chart.planets, cusps: chart.cusps, asc: chart.asc, mc: chart.mc, size: 400 }) +
+        drawWheelSVG({ planets: chart.planets, cusps: chart.cusps, asc: chart.asc, mc: chart.mc, size: 400, etch: "SW \u00B7 " + item.date + " \u00B7 " + String(item.city.name).toUpperCase() }) +
         '</div><p class="cap"><strong>' + nm + "</strong><br>" + bigThreeLine(chart) + "<br>" +
         '<span class="small">' + Places.label(item.city) + ", " + item.date + (item.time ? ", " + item.time : ", time unknown") + "</span></p></div>";
     }
@@ -195,6 +195,7 @@
     html += '<p class="fineprint">For entertainment and reflection only. This reading describes two chart patterns; it does not say what either person thinks or feels, ' +
       "and it is not a prediction of what the pair will do.</p>";
     resultEl.innerHTML = html;
+    if (window.WheelFX) WheelFX.play(resultEl);
     resultEl.style.display = "block";
 
     $("pair-share-btn").addEventListener("click", () => {

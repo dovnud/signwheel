@@ -346,3 +346,32 @@ ul.link-list li { border-bottom: 1px solid var(--line-soft); padding: 7px 0; fon
 ul.link-list li a { text-decoration: none; }
 ul.link-list li a:hover { text-decoration: underline; }
 ul.link-list li .dim { color: var(--cream-faint); font-size: 14px; }
+
+/* ------------------------------------------------------------ wave 4 */
+/* The wheel comes alive: brass light sweep, etched provenance ring,
+   and the living hero sky. All motion stops for reduced-motion. */
+.wheel-stage { position: relative; }
+.wheel-stage .sheen {
+  position: absolute; inset: 0; border-radius: 50%;
+  pointer-events: none; mix-blend-mode: screen;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 255deg, rgba(255, 196, 96, 0.16) 300deg, transparent 340deg);
+  -webkit-mask-image: radial-gradient(circle closest-side, transparent 76%, #000 84%, #000 90%, transparent 97%);
+  mask-image: radial-gradient(circle closest-side, transparent 76%, #000 84%, #000 90%, transparent 97%);
+  animation: sheen-spin 48s linear infinite;
+}
+@keyframes sheen-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .wheel-stage .sheen { animation: none; opacity: 0.4; }
+}
+.wheel-svg .w-planet, .wheel-svg .w-centre { transform-box: view-box; transform-origin: center; }
+.wheel-svg .w-etch { fill: var(--gold); opacity: 0.62; letter-spacing: 0.14em; font-family: var(--serif); }
+.hero { position: relative; }
+.hero > *:not(.sky-canvas):not(.sky-note) { position: relative; z-index: 1; }
+.sky-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.sky-note {
+  position: absolute; z-index: 2; max-width: 200px;
+  color: var(--gold-bright); font-size: 19px; line-height: 1.25;
+  transform: rotate(-2deg); opacity: 0; transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.sky-note.on { opacity: 0.95; }

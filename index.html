@@ -106,13 +106,20 @@ gtag('config', 'G-QK96T4TFGZ');
 <script src="/js/vsop87.js"></script>
 <script src="/js/engine.js"></script>
 <script src="/js/wheel.js"></script>
+<script src="/js/wheel-anim.js"></script>
 <script src="/js/stars.js"></script>
+<script src="/js/twinkle.js"></script>
 <script>
   (function () {
     var now = Date.now();
     var planets = Engine.planetLongitudes(now);
+    var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    var d = new Date(now);
+    var hh = ("0" + d.getHours()).slice(-2), mm = ("0" + d.getMinutes()).slice(-2);
+    var etch = "SW \u00B7 THE SKY NOW \u00B7 " + d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear() + " \u00B7 " + hh + ":" + mm;
     document.getElementById("hero-wheel").innerHTML =
-      drawWheelSVG({ planets: planets, cusps: null, asc: null, mc: null, size: 520 });
+      drawWheelSVG({ planets: planets, cusps: null, asc: null, mc: null, size: 520, etch: etch });
+    if (window.WheelFX) WheelFX.play(document.getElementById("hero-wheel"));
     var ph = Engine.moonPhase(now);
     document.getElementById("hero-moon").textContent =
       "Tonight: " + Engine.phaseName(ph.elongation) + ", " + Math.round(ph.illum * 100) +

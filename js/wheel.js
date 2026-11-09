@@ -32,6 +32,7 @@ function drawWheelSVG(opts) {
   let s = "";
   s += '<svg class="wheel-svg" viewBox="-34 -34 ' + (size + 68) + " " + (size + 68) + '" role="img" aria-label="Astrological chart wheel">';
   // rings
+  s += '<g class="w-rings">';
   s += '<circle class="ring" cx="' + cx + '" cy="' + cy + '" r="' + R_OUT + '"/>';
   s += '<circle class="ring-faint" cx="' + cx + '" cy="' + cy + '" r="' + (R_OUT - 3) + '"/>';
   s += '<circle class="ring" cx="' + cx + '" cy="' + cy + '" r="' + R_SIGN_IN + '"/>';
@@ -46,7 +47,20 @@ function drawWheelSVG(opts) {
     const [nx, ny] = pt(lonMid, (R_OUT + R_SIGN_IN) / 2 - size * 0.030);
     s += '<text class="sign-name" x="' + nx + '" y="' + ny + '" font-size="' + size * 0.016 + '" text-anchor="middle" dominant-baseline="middle">' + Engine.SIGNS[i].slice(0, 3).toUpperCase() + "</text>";
   }
+  s += "</g>";
+  // deadwax etching: provenance text along the bottom arc, like the
+  // writing etched into a record's runout groove. Style only, no data.
+  if (opts.etch) {
+    const er = size * 0.205, uid = "etch" + (++drawWheelSVG._etchUid || (drawWheelSVG._etchUid = 1));
+    const esc = String(opts.etch).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const a0 = 168 * Math.PI / 180, a1 = 12 * Math.PI / 180;
+    const x0 = (cx + er * Math.cos(a0)).toFixed(1), y0 = (cy + er * Math.sin(a0)).toFixed(1);
+    const x1 = (cx + er * Math.cos(a1)).toFixed(1), y1 = (cy + er * Math.sin(a1)).toFixed(1);
+    s += '<defs><path id="' + uid + '" d="M ' + x0 + " " + y0 + " A " + er + " " + er + " 0 0 0 " + x1 + " " + y1 + '"/></defs>';
+    s += '<text class="w-etch" font-size="' + size * 0.021 + '"><textPath href="#' + uid + '" startOffset="50%" text-anchor="middle">' + esc + "</textPath></text>";
+  }
   // house cusps
+  s += '<g class="w-cusps">';
   if (opts.cusps) {
     for (let i = 0; i < 12; i++) {
       const major = i === 0 || i === 3 || i === 6 || i === 9;
@@ -62,6 +76,7 @@ function drawWheelSVG(opts) {
       s += '<text class="angle-label" x="' + mx + '" y="' + my + '" font-size="' + size * 0.024 + '" text-anchor="middle">MC</text>';
     }
   }
+  s += "</g>";
   // planets, with a simple radial stagger when two land close together
   const entries = Object.keys(opts.planets).map((name) => ({ name, lon: opts.planets[name] })).sort((a, b) => a.lon - b.lon);
   let lastLon = -999, level = 0;
@@ -72,16 +87,20 @@ function drawWheelSVG(opts) {
     const [x, y] = pt(e.lon, r);
     const [lx, ly] = pt(e.lon, R_SIGN_IN - size * 0.012);
     const [ix, iy] = pt(e.lon, r);
+    s += '<g class="w-planet">';
     s += '<line class="cusp" x1="' + lx + '" y1="' + ly + '" x2="' + ix + '" y2="' + iy + '" stroke-opacity="0.14"/>';
     s += '<text class="planet-glyph" x="' + x + '" y="' + y + '" font-size="' + size * 0.047 + '" text-anchor="middle" dominant-baseline="middle">' + PLANET_GLYPHS[e.name] + "</text>";
     const within = e.lon - 30 * Math.floor(e.lon / 30);
     const deg = Math.floor(within);
     const [dx, dy] = pt(e.lon, r - size * 0.045);
     s += '<text class="planet-deg" x="' + dx + '" y="' + dy + '" font-size="' + size * 0.020 + '" text-anchor="middle" dominant-baseline="middle">' + deg + "°</text>";
+    s += "</g>";
   }
   // centre: a small brass sun disc
+  s += '<g class="w-centre">';
   s += '<circle cx="' + cx + '" cy="' + cy + '" r="' + size * 0.016 + '" fill="none" stroke="var(--gold)" stroke-opacity="0.8"/>';
   s += '<circle cx="' + cx + '" cy="' + cy + '" r="' + size * 0.004 + '" fill="var(--gold)"/>';
+  s += "</g>";
   s += "</svg>";
   return s;
 }
