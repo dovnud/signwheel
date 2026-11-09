@@ -7,6 +7,14 @@
 <meta name="description" content="How SignWheel works out a chart: the data, the method, the edge cases we flag instead of hiding, our measured accuracy against NASA JPL values, and how to check our numbers yourself.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23d9a441' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23d9a441'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/css/style.css">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QK96T4TFGZ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QK96T4TFGZ');
+</script>
 </head>
 <body>
 <div class="starfield" aria-hidden="true"></div>
@@ -38,17 +46,17 @@
     <p>Before this page was written, we tested the calculator against reference values derived from NASA's Jet Propulsion Laboratory ephemeris (DE440), the data the space agencies navigate by. That reference was itself checked against the Swiss Ephemeris, the paid standard the big astrology sites use, on 100 charts: the two agreed to within about a fiftieth of one arc-minute on every planet. Then we measured our own browser calculator against the same reference. The results are below, exactly as measured.</p>
 
     <h2>Our measured accuracy</h2>
-    <p>Worst difference found, across the standard test charts (normal births, southern hemisphere, far north, clock-change traps, a birth minutes before a sign change), between this calculator and the NASA JPL reference:</p>
+    <p>Worst difference found between this calculator and the NASA JPL reference, across the standard test charts and a fresh set of 60 random charts drawn for an independent audit on November 9, 2026 (normal births, southern hemisphere, far north, clock-change traps, a birth minutes before a sign change). The same audit also compared us against three published online ephemerides, including one built on the Swiss Ephemeris, and found the same picture:</p>
     <table class="placements">
       <tr><th>Body</th><th>Worst difference</th></tr>
-      <tr><td>Sun</td><td class="pos">0.13 arc-minutes</td></tr>
-      <tr><td>Mercury, Venus, Mars</td><td class="pos">under 0.41 arc-minutes</td></tr>
-      <tr><td>Jupiter, Saturn, Uranus, Neptune</td><td class="pos">under 0.39 arc-minutes</td></tr>
-      <tr><td>Pluto</td><td class="pos">1.57 arc-minutes</td></tr>
-      <tr><td>Moon</td><td class="pos">3.12 arc-minutes</td></tr>
-      <tr><td>Rising sign and Midheaven</td><td class="pos">under 0.45 arc-minutes</td></tr>
+      <tr><td>Sun</td><td class="pos">0.22 arc-minutes</td></tr>
+      <tr><td>Mercury, Mars, Jupiter, Saturn, Uranus, Neptune</td><td class="pos">under 0.55 arc-minutes</td></tr>
+      <tr><td>Venus</td><td class="pos">1.40 arc-minutes</td></tr>
+      <tr><td>Pluto</td><td class="pos">2.01 arc-minutes</td></tr>
+      <tr><td>Moon</td><td class="pos">under 5 arc-minutes</td></tr>
+      <tr><td>Rising sign and Midheaven</td><td class="pos">under 0.45 arc-minutes for births after 1970; up to about 8 for births before 1950</td></tr>
     </table>
-    <p class="small">One arc-minute is a sixtieth of a degree. For scale: a chart printed by a major site that differs from these values by more than about 2 arc-minutes on a planet is working from different settings or a lower-grade table, and any difference in the sign is a plain error. The Moon is our least precise line because it moves fast and wobbles most; 3 arc-minutes is a few minutes of clock time in Moon terms, and we would rather publish the number than round it away.</p>
+    <p class="small">One arc-minute is a sixtieth of a degree. For scale: a chart printed by a major site that differs from these values by more than about 2 arc-minutes on a planet is working from different settings or a lower-grade table, and any difference in the sign is a plain error. The Moon is our least precise line because it moves fast and wobbles most; about 5 arc-minutes is under ten minutes of clock time in Moon terms, and we would rather publish the number than round it away. The rising sign and Midheaven drift a little more for births before 1950 because our angle maths handles Earth's slightly uneven rotation in a simpler way for those years; the planets are unaffected. In the full audit, 600 placements produced no wrong signs and no wrong time offsets in 68 out of 68 tricky clock cases.</p>
 
     <h2>Check us yourself, in two minutes</h2>
     <p>Draw any chart here, then draw the same birth on astro.com (Astrodienst, the Swiss Ephemeris people) and compare the placement table line by line. The signs should match everywhere, and the degrees should match within the differences above. Where a site will not show you degrees, a house system, or the time offset it used, you cannot check it. We print all three on every chart.</p>
