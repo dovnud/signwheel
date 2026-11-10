@@ -375,3 +375,4 @@ ul.link-list li .dim { color: var(--cream-faint); font-size: 14px; }
   pointer-events: none;
 }
 .sky-note.on { opacity: 0.95; }
+.wordmark-mark { width: 30px; height: 30px; vertical-align: -7px; margin-right: 9px; }
